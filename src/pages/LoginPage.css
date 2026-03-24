@@ -1,0 +1,149 @@
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-bg);
+    padding: var(--space-4);
+}
+
+.login-box {
+    width: 100%;
+    max-width: 400px;
+    background-color: var(--color-surface);
+    padding: var(--space-8) var(--space-6);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--color-gray-100);
+    text-align: center;
+}
+
+.login-logo {
+    margin-bottom: var(--space-8);
+}
+
+.login-logo h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    margin-bottom: var(--space-2);
+    letter-spacing: -0.02em;
+}
+
+.login-logo p {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    font-weight: 500;
+}
+
+.login-benefits {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    background-color: var(--color-primary-bg);
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-8);
+    text-align: left;
+}
+
+.benefit-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+    font-weight: 600;
+}
+
+.benefit-icon {
+    font-size: var(--font-size-lg);
+}
+
+.oauth-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-bottom: var(--space-6);
+}
+
+.btn-oauth {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-md);
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: transform var(--transition-fast), opacity var(--transition-fast);
+}
+
+.btn-oauth:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+.btn-oauth:active {
+    transform: translateY(0);
+}
+
+.oauth-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background-color: white;
+    border-radius: var(--radius-full);
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.btn-kakao {
+    background-color: #FEE500;
+    color: #000000;
+}
+
+.kakao-icon {
+    color: #000000;
+    background-color: transparent;
+}
+
+.btn-google {
+    background-color: #ffffff;
+    color: #3c4043;
+    border: 1px solid #dadce0;
+}
+
+.btn-dev {
+    background-color: #1f2937;
+    color: #ffffff;
+}
+
+.google-icon {
+    color: #4285F4;
+}
+
+.dev-icon {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.16);
+}
+
+.login-footer-text {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-disabled);
+    line-height: 1.5;
+}
+
+.login-footer-text a {
+    color: var(--color-text-secondary);
+    text-decoration: underline;
+}
+
+.login-footer-text a:hover {
+    color: var(--color-text-primary);
+}
