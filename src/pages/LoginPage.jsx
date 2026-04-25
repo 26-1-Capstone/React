@@ -33,8 +33,20 @@ export default function LoginPage() {
     }, [navigate])
 
     const buildOAuthStartUrl = (provider, redirect) => {
-        const origin = (import.meta.env.VITE_OAUTH_ORIGIN || '').trim().replace(/\/$/, '')
+        const raw = (import.meta.env.VITE_OAUTH_ORIGIN || '').trim().replace(/\/$/, '')
         const query = `redirect=${encodeURIComponent(redirect || '/')}`
+
+        // HTTPS 페이지에서 http OAuth origin 으로 이동하면 Mixed Content 로 막힘.
+        // 이 경우에는 동일 출처(/oauth2/...)로 시작하고, Vercel rewrites 로 백엔드로 프록시한다.
+        let origin = ''
+        if (raw && /^https?:\/\//i.test(raw)) {
+            const pageIsHttps = typeof window !== 'undefined' && window.location.protocol === 'https:'
+            const originIsHttp = raw.startsWith('http://')
+            if (!(pageIsHttps && originIsHttp)) {
+                origin = raw
+            }
+        }
+
         return origin
             ? `${origin}/oauth2/authorization/${provider}?${query}`
             : `/oauth2/authorization/${provider}?${query}`
