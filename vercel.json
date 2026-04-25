@@ -13,10 +13,6 @@
       "destination": "http://3.36.139.67/login/oauth2/:path*"
     },
     {
-      "source": "/login/:path*",
-      "destination": "http://3.36.139.67/login/:path*"
-    },
-    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
