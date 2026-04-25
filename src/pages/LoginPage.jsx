@@ -11,16 +11,39 @@ export default function LoginPage() {
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
-        // 이미 로그인된 상태면 메인으로 이동
-        if (authStorage.isAuthenticated()) {
-            navigate('/', { replace: true })
+        const token = authStorage.getToken()
+        if (!token) return
+
+        // 만료된 토큰은 제거하고 로그인 화면에 머무른다.
+        try {
+            const [, payloadBase64] = token.split('.')
+            const payload = JSON.parse(atob(payloadBase64.replace(/-/g, '+').replace(/_/g, '/')))
+            const expMs = Number(payload?.exp || 0) * 1000
+            if (!expMs || Date.now() >= expMs) {
+                authStorage.removeToken()
+                return
+            }
+        } catch {
+            authStorage.removeToken()
+            return
         }
+
+        // 유효한 토큰이 있을 때만 홈으로 이동
+        navigate('/', { replace: true })
     }, [navigate])
+
+    const buildOAuthStartUrl = (provider, redirect) => {
+        const origin = (import.meta.env.VITE_OAUTH_ORIGIN || '').trim().replace(/\/$/, '')
+        const query = `redirect=${encodeURIComponent(redirect || '/')}`
+        return origin
+            ? `${origin}/oauth2/authorization/${provider}?${query}`
+            : `/oauth2/authorization/${provider}?${query}`
+    }
 
     const handleOAuthLogin = (provider) => {
         setIsLoading(true)
         const redirect = searchParams.get('redirect') || '/'
-        const target = `/oauth2/authorization/${provider}?redirect=${encodeURIComponent(redirect)}`
+        const target = buildOAuthStartUrl(provider, redirect)
         window.location.assign(target)
     }
 
@@ -81,7 +104,7 @@ export default function LoginPage() {
                         disabled={isLoading}
                     >
                         <span className="oauth-icon kakao-icon">K</span>
-                        카카오로 3초 만에 시작하기
+                        카카오 소셜 로그인
                     </button>
 
                     {/* 구글 로그인 */}
