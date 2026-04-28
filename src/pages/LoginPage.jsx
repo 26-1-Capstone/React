@@ -32,24 +32,31 @@ export default function LoginPage() {
         navigate('/', { replace: true })
     }, [navigate])
 
-    const buildOAuthStartUrl = (provider, redirect) => {
-        const raw = (import.meta.env.VITE_OAUTH_ORIGIN || '').trim().replace(/\/$/, '')
-        const query = `redirect=${encodeURIComponent(redirect || '/')}`
+    const resolveOAuthOrigin = () => {
+        const explicit = (import.meta.env.VITE_OAUTH_ORIGIN || '').trim().replace(/\/$/, '')
+        if (explicit && /^https?:\/\//i.test(explicit)) {
+            return explicit
+        }
 
-        // HTTPS 페이지에서 http OAuth origin 으로 이동하면 Mixed Content 로 막힘.
-        // 이 경우에는 동일 출처(/oauth2/...)로 시작하고, Vercel rewrites 로 백엔드로 프록시한다.
-        let origin = ''
-        if (raw && /^https?:\/\//i.test(raw)) {
-            const pageIsHttps = typeof window !== 'undefined' && window.location.protocol === 'https:'
-            const originIsHttp = raw.startsWith('http://')
-            if (!(pageIsHttps && originIsHttp)) {
-                origin = raw
+        // VITE_API_BASE_URL 이 절대 URL이면 그 호스트를 OAuth 시작점으로 사용
+        const apiBase = (import.meta.env.VITE_API_BASE_URL || '').trim()
+        if (apiBase.startsWith('http://') || apiBase.startsWith('https://')) {
+            try {
+                const u = new URL(apiBase)
+                return `${u.protocol}//${u.host}`
+            } catch {
+                /* ignore */
             }
         }
 
-        return origin
-            ? `${origin}/oauth2/authorization/${provider}?${query}`
-            : `/oauth2/authorization/${provider}?${query}`
+        // 기본 백엔드(현재 운영 IP) — OAuth 시작/콜백을 동일 호스트로 맞추기 위함
+        return 'http://3.36.139.67'
+    }
+
+    const buildOAuthStartUrl = (provider, redirect) => {
+        const origin = resolveOAuthOrigin()
+        const query = `redirect=${encodeURIComponent(redirect || '/')}`
+        return `${origin}/oauth2/authorization/${provider}?${query}`
     }
 
     const handleOAuthLogin = (provider) => {

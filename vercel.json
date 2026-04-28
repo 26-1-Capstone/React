@@ -10,14 +10,6 @@
       "dest": "http://3.36.139.67/api/$1"
     },
     {
-      "src": "/oauth2/(.*)",
-      "dest": "http://3.36.139.67/oauth2/$1"
-    },
-    {
-      "src": "/login/oauth2/(.*)",
-      "dest": "http://3.36.139.67/login/oauth2/$1"
-    },
-    {
       "handle": "filesystem"
     },
     {
