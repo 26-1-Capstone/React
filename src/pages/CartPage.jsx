@@ -7,6 +7,7 @@ import QuantitySelector from '@/components/common/QuantitySelector'
 import EmptyState from '@/components/common/EmptyState'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import api from '@/lib/api'
+import { getProductImageUrl } from '@/lib/productImageFromName'
 import './CartPage.css'
 
 export default function CartPage() {
@@ -89,7 +90,10 @@ export default function CartPage() {
                             {cartItems.map(item => (
                                 <li key={item.productId} className="cart-item">
                                     <div className="item-image-wrapper">
-                                        <img src={'https://via.placeholder.com/100'} alt={item.productName} />
+                                        <img
+                                            src={getProductImageUrl(item.productName, null) || 'https://via.placeholder.com/100'}
+                                            alt={item.productName}
+                                        />
                                     </div>
                                     <div className="item-info">
                                         <div className="item-header">

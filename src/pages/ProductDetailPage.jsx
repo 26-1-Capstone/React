@@ -7,6 +7,7 @@ import QuantitySelector from '@/components/common/QuantitySelector'
 import LoadingSpinner from '@/components/common/LoadingSpinner'
 import Toast from '@/components/common/Toast'
 import api from '@/lib/api'
+import { getProductImageUrl } from '@/lib/productImageFromName'
 import './ProductDetailPage.css'
 
 export default function ProductDetailPage() {
@@ -75,7 +76,7 @@ export default function ProductDetailPage() {
             <div className="product-detail-container">
                 <div className="product-image-area">
                     <img
-                        src={product.imageUrl || 'https://via.placeholder.com/400x400'}
+                        src={getProductImageUrl(product.name, product.imageUrl) || 'https://via.placeholder.com/400x400'}
                         alt={product.name}
                         className="product-detail-img"
                     />

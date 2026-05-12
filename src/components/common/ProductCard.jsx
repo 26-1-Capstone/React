@@ -1,13 +1,15 @@
 import './ProductCard.css'
 import PriceDisplay from './PriceDisplay'
 import { Link } from 'react-router-dom'
+import { getProductImageUrl } from '@/lib/productImageFromName'
 
 export default function ProductCard({ id, name, price, categoryName, imageUrl }) {
+    const resolvedSrc = getProductImageUrl(name, imageUrl) || 'https://via.placeholder.com/300x300?text=No+Image'
     return (
         <Link to={`/products/${id}`} className="product-card">
             <div className="product-card-image-wrapper">
                 <img
-                    src={imageUrl || 'https://via.placeholder.com/300x300?text=No+Image'}
+                    src={resolvedSrc}
                     alt={name}
                     className="product-card-image"
                     loading="lazy"
